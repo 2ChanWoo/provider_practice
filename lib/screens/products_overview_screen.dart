@@ -1,4 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:udemy_provider/providers/cart.dart';
+import 'package:udemy_provider/screens/cart_screen.dart';
+import 'package:udemy_provider/widgets/app_drawer.dart';
+import 'package:udemy_provider/widgets/badge.dart';
 
 import '../widgets/products_grid.dart';
 enum FilterOptions {
@@ -22,14 +27,16 @@ class _ProductsOverviewScreenState extends State<ProductsOverviewScreen> {
       appBar: AppBar(
         title: Text('MyShop'),
         actions: <Widget>[
-          FavoritePopupBotton(),
+          cartButton(),
+          FavoritePopupButton(),
         ],
       ),
+      drawer: AppDrawer(),
       body: ProductsGrid(_showOnlyFavorites),
     );
   }
 
-  Widget FavoritePopupBotton() {
+  Widget FavoritePopupButton() {
     return PopupMenuButton(
       onSelected: (FilterOptions selectedOption) {
         setState(() {
@@ -52,6 +59,25 @@ class _ProductsOverviewScreenState extends State<ProductsOverviewScreen> {
         )
 
       ],
+    );
+  }
+
+  Widget cartButton() {
+    return Consumer<Cart>(
+      builder: (_, cart, ch) => Badge(
+        child: ch,  //ch가 아래 child 인듯하다.!
+        value: cart.itemCount.toString(),
+      ),
+      child: IconButton(  //이건 변경될 필요가 없는거니까 child로 둬도 무방함.
+        icon: Icon(
+          Icons.shopping_cart,
+        ),
+        onPressed: () {
+          Navigator.of(context).pushNamed(
+            CartScreen.routeName
+          );
+        },
+      ),
     );
   }
 }

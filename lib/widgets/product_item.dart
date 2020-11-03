@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:udemy_provider/providers/product.dart';
 
 import '../screens/product_detail_screen.dart';
+import '../providers/cart.dart';
 
 class ProductItem extends StatelessWidget {
 //  final String id;
@@ -15,6 +16,7 @@ class ProductItem extends StatelessWidget {
   Widget build(BuildContext context) {
     print('product_item build');
     final prod = Provider.of<Product>(context, listen: false); // listen : false 해도 똑같은데??
+    final cart = Provider.of<Cart>(context, listen: false);
 
     return ClipRRect(
       borderRadius: BorderRadius.circular(10),
@@ -48,7 +50,11 @@ class ProductItem extends StatelessWidget {
             icon: Icon(
               Icons.shopping_cart,
             ),
-            onPressed: () {},
+            onPressed: () {
+              //이렇게하면 안되는데 왜 이렇게 했지? 그래도 본능적으로 알아서 다행이다
+             // Cart().addItem(prod.id, prod.price, prod.title);
+              cart.addItem(prod.id, prod.price, prod.title);
+            },
             color: Theme.of(context).accentColor,
           ),
         ),
