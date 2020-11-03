@@ -18,6 +18,26 @@ class ProductItem extends StatelessWidget {
     final prod = Provider.of<Product>(context, listen: false); // listen : false 해도 똑같은데??
     final cart = Provider.of<Cart>(context, listen: false);
 
+    //원래 타입을 몰라서 그냥 앞에 긴 타입을 안적어놨음. ctrl+q 로 확인한 타입은 아래와 같다.
+    //ScaffoldFeatureController<SnackBar, SnackBarClosedReason>
+    // --------------------------- Widget 반환하도록 다시 바꿈.
+    Widget addCartSnackBar() {
+      return SnackBar(
+        content: Text('add to cart!   \'${prod.title}\'',
+          textAlign: TextAlign.center,
+          style: TextStyle( color:  Colors.white),
+        ),
+       // backgroundColor: Theme.of(context).primaryColorLight,
+        duration: Duration(milliseconds: 1800),
+        action: SnackBarAction(
+          label: 'UNDO',
+          onPressed: () {
+            cart.removeSingleItem(prod.id);
+          },
+        ),
+      );
+    }
+
     return ClipRRect(
       borderRadius: BorderRadius.circular(10),
       child: GridTile(
@@ -54,11 +74,17 @@ class ProductItem extends StatelessWidget {
               //이렇게하면 안되는데 왜 이렇게 했지? 그래도 본능적으로 알아서 다행이다
              // Cart().addItem(prod.id, prod.price, prod.title);
               cart.addItem(prod.id, prod.price, prod.title);
+              Scaffold.of(context).hideCurrentSnackBar();   //스낵바 바로바로 나오게!!
+              Scaffold.of(context).showSnackBar(addCartSnackBar());
             },
             color: Theme.of(context).accentColor,
           ),
         ),
       ),
     );
+
+
   }
 }
+
+
