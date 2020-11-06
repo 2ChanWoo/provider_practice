@@ -1,4 +1,7 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;    //하도많이서 충돌이 일어날 수 있기 때문에 http만 사용할 수 있도록?
 
 import 'product.dart';
 
@@ -51,6 +54,15 @@ class Products with ChangeNotifier {
   }
 
   void addProduct(Product product) {
+    const url = 'https://flutter-udemy-3cde6.firebaseio.com/products.json'; //.json은 파베 형식.
+    http.post(url, body: json.encode({
+      'title': product.title,
+      'description': product.description,
+      'price': product.price,
+      'imageUrl': product.imageUrl,
+      'isFavorite': product.isFavorite,
+    }));
+
     final newProduct = Product(
       title: product.title,
       description: product.description,

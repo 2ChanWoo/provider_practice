@@ -17,7 +17,7 @@ class _EditProductScreenState extends State<EditProductScreen> {
   final _imageUrlController = TextEditingController();
   final _imageUrlFocusNode = FocusNode();
   final _form = GlobalKey<FormState>();
-  Product _editedProduct;
+  Product _editedProduct;   //이걸 지우고 아래처럼 초기화 해 주어야 에러가 발생하지 않음.
 //  var _editedProduct = Product(
 //    id: null,
 //    title: '',
@@ -25,6 +25,7 @@ class _EditProductScreenState extends State<EditProductScreen> {
 //    description: '',
 //    imageUrl: '',
 //  );
+
   var _initValues = {
     'title': '',
     'description': '',
@@ -131,6 +132,12 @@ class _EditProductScreenState extends State<EditProductScreen> {
                   return null;
                 },
                 onSaved: (value) {
+                  print(value);
+                  print('price : ${_editedProduct.price}');
+                  print(_editedProduct.description);
+                  print(_editedProduct.imageUrl);
+                  print(_editedProduct.id);
+
                   _editedProduct = Product(
                       title: value,
                       price: _editedProduct.price,
