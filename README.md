@@ -1,3 +1,9 @@
+## 2020.11.05
+TextFormField에서 initialValue 와 controller를 같이 사용 불가. (Error에 적어놈)/-
+
+추가, 수정, 삭제 기능 추가.
+
+
 ## 2020.11.03
 - Scaffold.of(context).hideCurrentSnackBar();
 
