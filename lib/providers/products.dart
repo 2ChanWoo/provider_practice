@@ -137,6 +137,7 @@ class Products with ChangeNotifier {
         _items[prodIndex] = newProduct; //로컬 업뎃도 그냥 두는구낭
         notifyListeners();
       }).catchError((error) {
+        //patch 에서는 에러스탯코드오면 Error가 안잡힙-----------------------------------------------
         print('업뎃 오류업뎃 오류업뎃 오류업뎃 오류업뎃 오류업뎃 오류업뎃 오류업뎃 오류업뎃 오류업뎃 오류업뎃 오류');
         throw error;
       });
