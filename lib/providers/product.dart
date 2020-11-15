@@ -1,4 +1,6 @@
 import 'package:flutter/foundation.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
 
 class Product with ChangeNotifier {
   final String id;
@@ -17,8 +19,32 @@ class Product with ChangeNotifier {
     this.isFavorite = false,
   });
 
-  void toggleFavoriteStatus() {
-    isFavorite = !isFavorite;
+  Future<void> toggleFavoriteStatus() {
+    final url = 'https://flutter-udemy-3cde6.firebaseio.com/products/$id.json';
+    final backupFavorite = isFavorite;
+    isFavorite = !backupFavorite;
     notifyListeners();
+
+    return http
+        .patch(
+      url,
+      body: json.encode({
+        'isFavorite': !backupFavorite,
+      }),
+    ).then((value) {
+      if(value.statusCode >= 400) {
+        print('http ErrorCode :: ${value.statusCode}');
+        isFavorite = backupFavorite;
+        notifyListeners();
+      }
+    })
+        .catchError(
+      (error) {
+        isFavorite = backupFavorite;
+        notifyListeners();
+        print('toggleFavoriteStatus() ERROR ::::: $error');
+        throw error;
+      },
+    );
   }
 }
