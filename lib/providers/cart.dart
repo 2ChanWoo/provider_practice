@@ -59,10 +59,10 @@ class Cart with ChangeNotifier {
 
   double get totalAmount {
     double total=0.0;
-    print('total -------------------------- $total');
+    print('total ------------------------------------- $total');
     _items.forEach((key, value) {
-      print('total -------------------------- ${value.price}');
-      print('total -------------------------- ${value.quantity}');
+      print('price ------------------------ ${value.price}');
+      print('quantity -------------------------- ${value.quantity}');
 
       total += value.price * value.quantity;
      // return total; //return 이 왜?

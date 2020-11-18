@@ -19,26 +19,26 @@ class Product with ChangeNotifier {
     this.isFavorite = false,
   });
 
-  Future<void> toggleFavoriteStatus() {
-    final url = 'https://flutter-udemy-3cde6.firebaseio.com/products/$id.json';
+  Future<void> toggleFavoriteStatus(String authToken, String userId) {
+    final url =
+        'https://flutter-udemy-3cde6.firebaseio.com/userFavorites/$userId/$id.json?auth=$authToken';
     final backupFavorite = isFavorite;
     isFavorite = !backupFavorite;
     notifyListeners();
 
-    return http
-        .patch(
+    return http.put(
       url,
-      body: json.encode({
-        'isFavorite': !backupFavorite,
-      }),
-    ).then((value) {
-      if(value.statusCode >= 400) {
+      body: json.encode(
+        isFavorite,
+      ),
+    )
+        .then((value) {
+      if (value.statusCode >= 400) {
         print('http ErrorCode :: ${value.statusCode}');
         isFavorite = backupFavorite;
         notifyListeners();
       }
-    })
-        .catchError(
+    }).catchError(
       (error) {
         isFavorite = backupFavorite;
         notifyListeners();

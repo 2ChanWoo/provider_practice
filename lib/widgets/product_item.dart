@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:udemy_provider/providers/auth.dart';
 import 'package:udemy_provider/providers/product.dart';
 
 import '../screens/product_detail_screen.dart';
@@ -18,6 +19,7 @@ class ProductItem extends StatelessWidget {
     final prod = Provider.of<Product>(context,
         listen: false); // listen : false 해도 똑같은데??
     final cart = Provider.of<Cart>(context, listen: false);
+    final auth = Provider.of<Auth>(context, listen: false);
 
     //원래 타입을 몰라서 그냥 앞에 긴 타입을 안적어놨음. ctrl+q 로 확인한 타입은 아래와 같다.
     //ScaffoldFeatureController<SnackBar, SnackBarClosedReason>
@@ -63,7 +65,7 @@ class ProductItem extends StatelessWidget {
                   prod.isFavorite ? Icons.favorite : Icons.favorite_border),
               color: Theme.of(context).accentColor,
               onPressed: () {
-                prod.toggleFavoriteStatus()
+                prod.toggleFavoriteStatus(auth.token, auth.userId,)
                     .catchError((error) {
                   print('Favorite Icon Button Error ::::: $error');
                 });

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:udemy_provider/screens/auth_screen.dart';
 
 import '../screens/orders_screen.dart';
 import '../screens/user_products_screen.dart';
@@ -45,6 +46,14 @@ class AppDrawer extends StatelessWidget {
             title: Text('Lisence'),
             onTap: () {
               Navigator.of(context).push(MaterialPageRoute(builder: (_) => LicensePage()));
+            },
+          ),
+          Divider(),
+          ListTile(
+            leading: Icon(Icons.person),
+            title: Text('Login'),
+            onTap: () {
+              Navigator.of(context).push(MaterialPageRoute(builder: (_) => AuthScreen()));
             },
           ),
         ],

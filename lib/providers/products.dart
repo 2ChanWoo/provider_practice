@@ -1,7 +1,8 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;    //하도많이서 충돌이 일어날 수 있기 때문에 http만 사용할 수 있도록?
+import 'package:http/http.dart'
+    as http; //하도많이서 충돌이 일어날 수 있기 때문에 http만 사용할 수 있도록?
 
 import 'product.dart';
 import '../models/http_exception.dart';
@@ -42,6 +43,11 @@ class Products with ChangeNotifier {
 //    ),
   ];
 
+  final String authToken;
+  final String userId;
+
+  Products(this.authToken, this.userId, this._items);
+
   List<Product> get items {
     return [..._items];
   }
@@ -55,27 +61,40 @@ class Products with ChangeNotifier {
   }
 
   //강의버전에서는 await version임.
-  Future<void> fetchAndSetProducts() {
-    const url = 'https://flutter-udemy-3cde6.firebaseio.com/products.json';
-
+  Future<void> fetchAndSetProducts() async {
+    final url =
+        'https://flutter-udemy-3cde6.firebaseio.com/products.json?auth=$authToken&orderBy="creatorId"&equalTo="$userId"';
+    final url2 =
+        'https://flutter-udemy-3cde6.firebaseio.com/userFavorites/$userId.json?auth=$authToken';
     return http.get(url).then((response) {
       final extractedData = json.decode(response.body) as Map<String, dynamic>;
-      final List<Product> loadedProducts = [];
 
-      print(extractedData);
-      extractedData.forEach((prodId, prodData) {
-        loadedProducts.add(Product(
-          id: prodId,
-          title: prodData['title'],
-          description: prodData['description'],
-          price: prodData['price'],
-          isFavorite: prodData['isFavorite'],
-          imageUrl: prodData['imageUrl'],
-        ));
+      if (extractedData == null || extractedData['error'] != null) {
+        print('---------------- extractedData ::::: $extractedData');
+        print('------------------- extractedData null check');
+        return;
+      }
+
+      http.get(url2).then((favoriteResponse) {
+        final favoriteData = json.decode(favoriteResponse.body);
+
+        final List<Product> loadedProducts = [];
+        extractedData.forEach((prodId, prodData) {
+          loadedProducts.add(Product(
+            id: prodId,
+            title: prodData['title'],
+            description: prodData['description'],
+            price: prodData['price'],
+            //isFavorite: prodData['isFavorite'],
+            isFavorite:
+                favoriteData == null ? false : (favoriteData[prodId] ?? false),
+            imageUrl: prodData['imageUrl'],
+          ));
+        });
+
+        _items = loadedProducts;
+        notifyListeners();
       });
-
-      _items = loadedProducts;
-      notifyListeners();
     }).catchError((error) {
       print('fetchAndSetProducts error ::::::::::::::: $error');
       throw error;
@@ -83,15 +102,20 @@ class Products with ChangeNotifier {
   }
 
   Future<void> addProduct(Product product) {
-    const url = 'https://flutter-udemy-3cde6.firebaseio.com/products.json'; //.json은 파베 형식.
+    final url =
+        'https://flutter-udemy-3cde6.firebaseio.com/products.json?auth=$authToken'; //.json은 파베 형식.
     //await Future.delayed(Duration( seconds:  3 ));
-    return http.post(url, body: json.encode({
-      'title': product.title,
-      'description': product.description,
-      'price': product.price,
-      'imageUrl': product.imageUrl,
-      'isFavorite': product.isFavorite,
-    })).then((response) {
+    return http
+        .post(url,
+            body: json.encode({
+              'title': product.title,
+              'description': product.description,
+              'price': product.price,
+              'imageUrl': product.imageUrl,
+//      'isFavorite': product.isFavorite,
+              'creatorId': userId,
+            }))
+        .then((response) {
       print(response);
       print(json.decode(response.body));
 
@@ -125,15 +149,18 @@ class Products with ChangeNotifier {
 
   Future<void> updateProduct(String id, Product newProduct) {
     final prodIndex = _items.indexWhere((prod) => prod.id == id);
-    final url = 'https://flutter-udemy-3cde6.firebaseio.com/products/$id.json';
+    final url =
+        'https://flutter-udemy-3cde6.firebaseio.com/products/$id.json?auth=$authToken';
     if (prodIndex >= 0) {
-      return http.patch(url, body: json.encode({
-        'title' : newProduct.title,
-        'price' : newProduct.price,
-        'description' : newProduct.description,
-        'imageUrl' : newProduct.imageUrl,
-      })
-      ).then((value) {
+      return http
+          .patch(url,
+              body: json.encode({
+                'title': newProduct.title,
+                'price': newProduct.price,
+                'description': newProduct.description,
+                'imageUrl': newProduct.imageUrl,
+              }))
+          .then((value) {
         _items[prodIndex] = newProduct; //로컬 업뎃도 그냥 두는구낭
         notifyListeners();
       }).catchError((error) {
@@ -148,7 +175,8 @@ class Products with ChangeNotifier {
   }
 
   Future<void> deleteProduct(String id) async {
-    final url = 'https://flutter-update.firebaseio.com/products/$id.json';
+    final url =
+        'https://flutter-update.firebaseio.com/products/$id.json?auth=$authToken';
     final existingProductIndex = _items.indexWhere((prod) => prod.id == id);
     var existingProduct = _items[existingProductIndex];
     _items.removeAt(existingProductIndex);

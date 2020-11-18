@@ -1,3 +1,7 @@
+#### 2020.11.18 에러저장용.
+user_product_screen 에서 provider.fetch~~ 요거 listen : false로 해야 에러잡힘.
+
+
 ## 2020.11.12
 
 ### .jon을 지우면, post,get 은 error가 발생하지만, **patch, update는 Error가 안남.**
