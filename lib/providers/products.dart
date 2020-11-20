@@ -61,9 +61,11 @@ class Products with ChangeNotifier {
   }
 
   //강의버전에서는 await version임.
-  Future<void> fetchAndSetProducts() async {
+  Future<void> fetchAndSetProducts({bool filterByUser = false}) async {
+    String filterString = filterByUser ? 'orderBy="creatorId"&equalTo="$userId"' : '';
+
     final url =
-        'https://flutter-udemy-3cde6.firebaseio.com/products.json?auth=$authToken&orderBy="creatorId"&equalTo="$userId"';
+        'https://flutter-udemy-3cde6.firebaseio.com/products.json?auth=$authToken&$filterString';
     final url2 =
         'https://flutter-udemy-3cde6.firebaseio.com/userFavorites/$userId.json?auth=$authToken';
     return http.get(url).then((response) {

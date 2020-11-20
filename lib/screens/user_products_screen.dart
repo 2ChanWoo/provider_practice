@@ -6,11 +6,23 @@ import '../providers/products.dart';
 import '../widgets/user_product_item.dart';
 import '../widgets/app_drawer.dart';
 
-class UserProductsScreen extends StatelessWidget {
+class UserProductsScreen extends StatefulWidget {
   static const routeName = '/user-products';
 
+  @override
+  _UserProductsScreenState createState() => _UserProductsScreenState();
+}
+
+class _UserProductsScreenState extends State<UserProductsScreen> {
   Future<void> _refreshProducts(BuildContext ctx) async{
-    await Provider.of<Products>(ctx).fetchAndSetProducts();
+    await Provider.of<Products>(ctx, listen: false).fetchAndSetProducts(filterByUser:  true);
+  }
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    Provider.of<Products>(context, listen: false).fetchAndSetProducts(filterByUser:  true);
   }
 
   @override

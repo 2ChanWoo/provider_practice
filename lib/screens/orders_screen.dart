@@ -25,6 +25,7 @@ class _OrdersScreenState extends State<OrdersScreen> {
 
     _ordersFuture = _obtainOrdersFuture();
   }
+  //원래 FutureBuilder쓰이는게 맞는데 그냥 내가 이렇게 해버림. ------------- FutureBuilder가 맞는방법인듯싶다.
 
   @override
   Widget build(BuildContext context) {

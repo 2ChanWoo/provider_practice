@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:udemy_provider/screens/auth_screen.dart';
+import 'package:provider/provider.dart';
 
 import '../screens/orders_screen.dart';
 import '../screens/user_products_screen.dart';
+import '../providers/auth.dart';
 
 class AppDrawer extends StatelessWidget {
   @override
@@ -50,10 +52,12 @@ class AppDrawer extends StatelessWidget {
           ),
           Divider(),
           ListTile(
-            leading: Icon(Icons.person),
-            title: Text('Login'),
+            leading: Icon(Icons.exit_to_app),
+            title: Text('Logout'),
             onTap: () {
-              Navigator.of(context).push(MaterialPageRoute(builder: (_) => AuthScreen()));
+              Navigator.of(context).pop();  //내꺼는 에러안나는데 강의에서는 에러나서 일단 해둠
+
+              Provider.of<Auth>(context, listen: false).logout();
             },
           ),
         ],
