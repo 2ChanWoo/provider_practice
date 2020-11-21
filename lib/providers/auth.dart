@@ -81,7 +81,7 @@ class Auth with ChangeNotifier {
     return _authenticate(email, password, 'signInWithPassword');  //강의랑 다름. 강의는 verifyPassword
   }
 
-  Future<bool> autoLogin() async {
+  Future<bool> tryAutoLogin() async {
     print('try autoLogin.');
     try {final prefs = await SharedPreferences.getInstance();
     if(!prefs.containsKey('userData')) {
@@ -99,7 +99,8 @@ class Auth with ChangeNotifier {
     _userId = extractedUserData['userId'];
     _expiryDate = expiryDate;
     notifyListeners();
-    autoLogin();}
+    _autoLogout();
+    }
     catch (e) {
       print('auto login error ::::: $e');
       return false;

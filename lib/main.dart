@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:udemy_provider/providers/auth.dart';
 import 'package:udemy_provider/providers/cart.dart';
 import 'package:udemy_provider/providers/orders.dart';
@@ -13,7 +14,15 @@ import './providers/products.dart';
 import './screens/user_products_screen.dart';
 import './screens/edit_product_screen.dart';
 
-void main() => runApp(MyApp());
+void main() {
+  //SharedPreferences.setMockInitialValues({});
+  //Once you have called dispose() on a Products, it can no longer be used.
+  //Udemy에서 위 경고에 setMockInitialValues 이거쓰면 경고 없어진다했는데,,
+  //아예 오토로그인이 안됨 ㅜ
+  //저게 SharedPreferences값을 테스트값으로 바꾸는거라네 ㅡㅡ ㅁㅈ
+
+  runApp(MyApp());
+}
 
 class MyApp extends StatelessWidget {
   @override
@@ -51,9 +60,9 @@ class MyApp extends StatelessWidget {
               fontFamily: 'Lato',
             ),
             home: auth.isAuth
-                ? ProductsOverviewScreen()
-                : FutureBuilder(
-                    future: auth.autoLogin(),
+                ? ProductsOverviewScreen()  //로그인된 상태
+                : FutureBuilder(  //로그인되지 않은 상태
+                    future: auth.tryAutoLogin(),
                     builder: (ctx, authResultSnapshot) =>
                         authResultSnapshot.connectionState ==
                                 ConnectionState.waiting

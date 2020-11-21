@@ -56,6 +56,8 @@ class AppDrawer extends StatelessWidget {
             title: Text('Logout'),
             onTap: () {
               Navigator.of(context).pop();  //내꺼는 에러안나는데 강의에서는 에러나서 일단 해둠
+              Navigator.of(context).pushReplacementNamed('/');
+                //이걸 추가하고 예기치않은 상황이 발생하지 않도록??
 
               Provider.of<Auth>(context, listen: false).logout();
             },

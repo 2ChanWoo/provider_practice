@@ -1,3 +1,10 @@
+#### 2020.11.21
+자동로그인 성공하면, 다음과 같은 에러와 흰 화면에서 상품들이 로드되지 않음.
+ERROR:flutter/lib/ui/ui_dart_state.cc(157)] Unhandled Exception: A Products was used after being disposed.
+E/flutter (26984): Once you have called dispose() on a Products, it can no longer be used.
+
+구글링 결과 ChangeNotifierProvider.value 를 쓰면 해결되는거라하는데, 안됨..
+
 #### 2020.11.18 에러저장용.
 user_product_screen 에서 provider.fetch~~ 요거 listen : false로 해야 에러잡힘.
 

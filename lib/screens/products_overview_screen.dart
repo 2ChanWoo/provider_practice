@@ -37,6 +37,8 @@ class _ProductsOverviewScreenState extends State<ProductsOverviewScreen> {
   //위 initState에서 동작하지 않는 코드를 did를 이용하여 해결할 수 있다.
   @override
   void didChangeDependencies() {
+    super.didChangeDependencies();
+
     //여기서는 반드시 한번만 실행할 수 있도록 _isInit이 필요하다..! 아니면 무한 get하는데???
     if (_isInit) {
       setState(() {
@@ -49,7 +51,6 @@ class _ProductsOverviewScreenState extends State<ProductsOverviewScreen> {
       });
     }
     _isInit = false;
-    super.didChangeDependencies();
   }
 
   @override
