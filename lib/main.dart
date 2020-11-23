@@ -6,6 +6,7 @@ import 'package:udemy_provider/providers/cart.dart';
 import 'package:udemy_provider/providers/orders.dart';
 import 'package:udemy_provider/screens/auth_screen.dart';
 import 'package:udemy_provider/screens/cart_screen.dart';
+import 'package:udemy_provider/screens/first_screen.dart';
 import 'package:udemy_provider/screens/orders_screen.dart';
 
 import './screens/products_overview_screen.dart';
@@ -51,23 +52,14 @@ class MyApp extends StatelessWidget {
           ),
         ),
       ],
-      child: Consumer<Auth>(
-        builder: (ctx, auth, _) => MaterialApp(
+      child: MaterialApp(
             title: 'MyShop',
             theme: ThemeData(
               primarySwatch: Colors.purple,
               accentColor: Colors.deepOrange,
               fontFamily: 'Lato',
             ),
-            home: auth.isAuth
-                ? ProductsOverviewScreen()  //로그인된 상태
-                : FutureBuilder(  //로그인되지 않은 상태
-                    future: auth.tryAutoLogin(),
-                    builder: (ctx, authResultSnapshot) =>
-                        authResultSnapshot.connectionState ==
-                                ConnectionState.waiting
-                            ? Container(color: Colors.cyan,)
-                            : AuthScreen()),
+            home: FirstScreen(),
             routes: {
               ProductDetailScreen.routeName: (ctx) => ProductDetailScreen(),
               CartScreen.routeName: (ctx) => CartScreen(),
@@ -76,7 +68,7 @@ class MyApp extends StatelessWidget {
               EditProductScreen.routeName: (ctx) => EditProductScreen(),
               AuthScreen.routeName: (ctx) => AuthScreen(),
             }),
-      ),
+
     );
   }
 }
