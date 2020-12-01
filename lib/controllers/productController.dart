@@ -6,20 +6,20 @@ import '../models/http_exception.dart';
 import '../models/product.dart';
 
 class ProductController extends GetxController {
-  RxList<Product> _items = [].obs;
+  RxList<Product> _items = <Product>[].obs;
 
   final String authToken;
   final String userId;
 
-  ProductController(this._items, this.authToken, this.userId);
+  ProductController({this.authToken, this.userId});
 
-  static List<Product> get to {
+  static ProductController get to {
     return Get.find();
   }
 
-//  List<Product> get items { //안돼는줄 알았는데, 실험결과 반환 제대로 될듯요
-//    return [...items];
-//  }
+  List<Product> get items { //안돼는줄 알았는데, 실험결과 반환 제대로 될듯요
+    return [...items];
+  }
 
   List<Product> get favoriteItems {   //이렇게 게터하면 자동반환 되는거지? obs값이 아니게되나..? otList니까..??
     return _items.where((e) => e.isFavorite.value == true ).toList();

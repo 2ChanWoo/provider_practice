@@ -19,6 +19,32 @@ class Product{
     @required this.imageUrl,
     this.isFavorite,
   });
+
+  Future<void> toggleFavoriteStatus(String authToken, String userId) {
+    final url =
+        'https://flutter-udemy-3cde6.firebaseio.com/userFavorites/$userId/$id.json?auth=$authToken';
+    final backupFavorite = isFavorite.value;
+    isFavorite.value = !backupFavorite;
+
+    return http.put(
+      url,
+      body: json.encode(
+        isFavorite,
+      ),
+    )
+        .then((value) {
+      if (value.statusCode >= 400) {
+        print('http ErrorCode :: ${value.statusCode}');
+        isFavorite.value = backupFavorite;
+      }
+    }).catchError(
+          (error) {
+        isFavorite.value = backupFavorite;
+        print('toggleFavoriteStatus() ERROR ::::: $error');
+        throw error;
+      },
+    );
+  }
 }
 
 

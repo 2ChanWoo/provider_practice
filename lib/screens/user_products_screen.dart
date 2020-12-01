@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:udemy_provider/screens/edit_product_screen.dart';
 
 import '../providers/products.dart';
+import '../controllers/productController.dart';
 import '../widgets/user_product_item.dart';
 import '../widgets/app_drawer.dart';
 
@@ -15,20 +16,24 @@ class UserProductsScreen extends StatefulWidget {
 
 class _UserProductsScreenState extends State<UserProductsScreen> {
   Future<void> _refreshProducts(BuildContext ctx) async{
-    await Provider.of<Products>(ctx, listen: false).fetchAndSetProducts(filterByUser:  true);
+    //await Provider.of<Products>(ctx, listen: false).fetchAndSetProducts(filterByUser:  true); --
+    await ProductController.to.fetchAndSetProducts(filterByUser:  true);
   }
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
-    Provider.of<Products>(context, listen: false).fetchAndSetProducts(filterByUser:  true);
+    //Provider.of<Products>(context, listen: false).fetchAndSetProducts(filterByUser:  true); --
+    ProductController.to.fetchAndSetProducts(filterByUser:  true);
+
   }
 
   @override
   Widget build(BuildContext context) {
     print('aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa');
-    final productsData = Provider.of<Products>(context);
+    //final productsData = Provider.of<Products>(context);    --
+    final productsData = ProductController.to;
     return Scaffold(
       appBar: AppBar(
         title: const Text('Your Products'),

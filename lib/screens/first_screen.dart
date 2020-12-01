@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
-//import 'package:provider/provider.dart';
 
 import 'products_overview_screen.dart';
 import 'auth_screen.dart';
 
-import '../providers/auth.dart';
+import '../controllers/auth.dart';
 
 class FirstScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    final auth = Provider.of<Auth>(context);
+    //final auth = Provider.of<Auth>(context); --
+    final auth = Auth.to;
 
     return auth.isAuth
         ? ProductsOverviewScreen()

@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+
 //import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:udemy_provider/bindings/home_binding.dart';
 import 'package:udemy_provider/providers/auth.dart';
 import 'package:udemy_provider/providers/cart.dart';
 import 'package:udemy_provider/providers/orders.dart';
@@ -14,6 +16,8 @@ import './screens/product_detail_screen.dart';
 import './providers/products.dart';
 import './screens/user_products_screen.dart';
 import './screens/edit_product_screen.dart';
+
+import 'package:get/get.dart';
 
 void main() {
   //SharedPreferences.setMockInitialValues({});
@@ -29,46 +33,22 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     print('---------------------------main build');
-    return MultiProvider(
-      providers: [
-        ChangeNotifierProvider(
-          create: (ctx) => Auth(),
+    return GetMaterialApp(
+        initialBinding: HomeBinding(),
+        title: 'MyShop',
+        theme: ThemeData(
+          primarySwatch: Colors.purple,
+          accentColor: Colors.deepOrange,
+          fontFamily: 'Lato',
         ),
-        ChangeNotifierProxyProvider<Auth, Products>(
-          update: (ctx, auth, previousProducts) => Products(
-            auth.token,
-            auth.userId,
-            previousProducts == null ? [] : previousProducts.items,
-          ),
-        ),
-        ChangeNotifierProvider(
-          create: (ctx) => Cart(),
-        ),
-        ChangeNotifierProxyProvider<Auth, Orders>(
-          update: (ctx, auth, previousOrders) => Orders(
-            auth.token,
-            //Orders는 사용자구분 내가 귀찮아서 안한듯
-            previousOrders == null ? [] : previousOrders.orders,
-          ),
-        ),
-      ],
-      child: MaterialApp(
-            title: 'MyShop',
-            theme: ThemeData(
-              primarySwatch: Colors.purple,
-              accentColor: Colors.deepOrange,
-              fontFamily: 'Lato',
-            ),
-            home: FirstScreen(),
-            routes: {
-              ProductDetailScreen.routeName: (ctx) => ProductDetailScreen(),
-              CartScreen.routeName: (ctx) => CartScreen(),
-              OrdersScreen.routeName: (ctx) => OrdersScreen(),
-              UserProductsScreen.routeName: (ctx) => UserProductsScreen(),
-              EditProductScreen.routeName: (ctx) => EditProductScreen(),
-              AuthScreen.routeName: (ctx) => AuthScreen(),
-            }),
-
-    );
+        home: FirstScreen(),
+        routes: {
+          ProductDetailScreen.routeName: (ctx) => ProductDetailScreen(),
+          CartScreen.routeName: (ctx) => CartScreen(),
+          OrdersScreen.routeName: (ctx) => OrdersScreen(),
+          UserProductsScreen.routeName: (ctx) => UserProductsScreen(),
+          EditProductScreen.routeName: (ctx) => EditProductScreen(),
+          AuthScreen.routeName: (ctx) => AuthScreen(),
+        });
   }
 }

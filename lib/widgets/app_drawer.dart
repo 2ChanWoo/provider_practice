@@ -4,7 +4,8 @@ import 'package:udemy_provider/screens/auth_screen.dart';
 
 import '../screens/orders_screen.dart';
 import '../screens/user_products_screen.dart';
-import '../providers/auth.dart';
+//import '../providers/auth.dart';
+import '../controllers/auth.dart';
 
 class AppDrawer extends StatelessWidget {
   @override
@@ -59,7 +60,8 @@ class AppDrawer extends StatelessWidget {
               Navigator.of(context).pushReplacementNamed('/');
                 //이걸 추가하고 예기치않은 상황이 발생하지 않도록??
 
-              Provider.of<Auth>(context, listen: false).logout();
+              //Provider.of<Auth>(context, listen: false).logout();  --
+              Auth.to.logout();
             },
           ),
         ],

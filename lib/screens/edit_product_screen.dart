@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 //import 'package:provider/provider.dart';
 
-import '../providers/product.dart';
-import '../providers/products.dart';
+import '../models/product.dart';
+import '../controllers/productController.dart';
+
+import 'package:get/get.dart';
 
 class EditProductScreen extends StatefulWidget {
   static const routeName = '/edit-product';
@@ -50,7 +52,8 @@ class _EditProductScreenState extends State<EditProductScreen> {
       final productId = ModalRoute.of(context).settings.arguments as String;
       if (productId != null) {
         _editedProduct =
-            Provider.of<Products>(context, listen: false).findById(productId);
+            //Provider.of<Products>(context, listen: false).findById(productId); --
+        ProductController.to.findById(productId);
         _initValues = {
           'title': _editedProduct.title,
           'description': _editedProduct.description,
@@ -102,7 +105,8 @@ class _EditProductScreenState extends State<EditProductScreen> {
 
     _form.currentState.save();
     if (_editedProduct.id != null) {
-      Provider.of<Products>(context, listen: false)
+      //Provider.of<Products>(context, listen: false) --
+        ProductController.to
           .updateProduct(_editedProduct.id, _editedProduct)
       .then((value) {
         setState(() {
@@ -129,7 +133,8 @@ class _EditProductScreenState extends State<EditProductScreen> {
         );
       });
     } else {
-      Provider.of<Products>(context, listen: false)
+      //Provider.of<Products>(context, listen: false) --
+      ProductController.to
           .addProduct(_editedProduct)
           .then((value) {
         setState(() {

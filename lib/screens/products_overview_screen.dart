@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 //import 'package:provider/provider.dart';
 import 'package:udemy_provider/providers/cart.dart';
+import '../controllers/cartController.dart';
 import 'package:udemy_provider/providers/products.dart';
+import '../controllers/productController.dart';
 import 'package:udemy_provider/screens/cart_screen.dart';
 import 'package:udemy_provider/widgets/app_drawer.dart';
 import 'package:udemy_provider/widgets/badge.dart';
@@ -44,7 +47,8 @@ class _ProductsOverviewScreenState extends State<ProductsOverviewScreen> {
       setState(() {
         _isLoading = true;
       });
-      Provider.of<Products>(context).fetchAndSetProducts().then((_) {
+      //Provider.of<Products>(context).fetchAndSetProducts().then((_) {  --
+      ProductController.to.fetchAndSetProducts().then((_) {
         setState(() {
           _isLoading = false;
         });
@@ -97,21 +101,19 @@ class _ProductsOverviewScreenState extends State<ProductsOverviewScreen> {
     );
   }
 
-  Widget cartButton() {
-    return Consumer<Cart>(
-      builder: (_, cart, ch) => Badge(
-        child: ch,  //ch가 아래 child 인듯하다.!
-        value: cart.itemCount.toString(),
-      ),
-      child: IconButton(  //이건 변경될 필요가 없는거니까 child로 둬도 무방함.
-        icon: Icon(
-          Icons.shopping_cart,
-        ),
-        onPressed: () {
-          Navigator.of(context).pushNamed(
-            CartScreen.routeName
-          );
-        },
+  Widget cartButton() {   // ------ consumer to obx
+    return Obx( () => Badge(
+        child: IconButton(  //이건 변경될 필요가 없는거니까 child로 둬도 무방함.
+          icon: Icon(
+            Icons.shopping_cart,
+          ),
+          onPressed: () {
+            Navigator.of(context).pushNamed(
+                CartScreen.routeName
+            );
+          },
+        ),//ch가 아래 child 인듯하다.!
+        value: CartController.to.itemCount.toString(),
       ),
     );
   }

@@ -3,10 +3,12 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
-import '../providers/orders.dart' as ord;
+//import '../providers/orders.dart' as ord;
+import '../controllers/orderController.dart';
+import '../models/order.dart';
 
 class OrderItem extends StatefulWidget {
-  final ord.OrderItem order;
+  final Order order;
 
   OrderItem(this.order);  //cart보다 요방식이 더 낫제~
 

@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 //import 'package:provider/provider.dart';
 
-import '../providers/orders.dart' show Orders;
+//import '../providers/orders.dart' show Orders;
+import '../controllers/orderController.dart';
 import '../widgets/order_item.dart';
 import '../widgets/app_drawer.dart';
 
@@ -16,7 +18,8 @@ class _OrdersScreenState extends State<OrdersScreen> {
   Future _ordersFuture;
 
   Future _obtainOrdersFuture() {
-    return Provider.of<Orders>(context, listen: false).fetchAndSetOrders();
+    //return Provider.of<Orders>(context, listen: false).fetchAndSetOrders(); --
+    return OrderController.to.fetchAndSetOrders();
   }
 
   @override
@@ -49,11 +52,10 @@ class _OrdersScreenState extends State<OrdersScreen> {
                 child: Text('An error occurred!'),
               );
             } else {
-              return Consumer<Orders>(
-                builder: (ctx, orderData, child) => ListView.builder(
-                  itemCount: orderData.orders.length,
+              return Obx(() => ListView.builder(      // ----- consumer to obx
+                  itemCount: OrderController.to.orders.length,
                   itemBuilder: (ctx, i) =>
-                      OrderItem(orderData.orders[i]), //cart보다 요방식이 더 낫제~
+                      OrderItem(OrderController.to.orders[i]), //cart보다 요방식이 더 낫제~
                 ),
               );
             }

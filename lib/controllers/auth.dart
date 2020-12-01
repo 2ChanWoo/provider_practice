@@ -13,7 +13,12 @@ class Auth extends GetxController {
   String _userId;
   Timer _authTimer;
 
+  static Auth get to {
+    return Get.find();
+  }
+
   bool get isAuth {
+    print(_token);
     return token != null;
   }
 

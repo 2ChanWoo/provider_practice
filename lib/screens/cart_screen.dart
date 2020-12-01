@@ -1,16 +1,19 @@
 import 'package:flutter/material.dart';
+import 'package:udemy_provider/controllers/cartController.dart';
 //import 'package:provider/provider.dart';
 
 import '../providers/cart.dart' show Cart;
 import '../widgets/cart_item.dart';
-import '../providers/orders.dart';
-
+import '../controllers/orderController.dart';
+import 'package:get/get.dart';
 class CartScreen extends StatelessWidget {
   static const routeName = '/cart';
 
   @override
   Widget build(BuildContext context) {
-    final cart = Provider.of<Cart>(context);
+ //   final cart = Provider.of<Cart>(context);
+    final cart = CartController.to;
+
     return Scaffold(
       appBar: AppBar(
         title: Text('Your Cart'),
@@ -38,7 +41,7 @@ class CartScreen extends StatelessWidget {
                     ),
                     backgroundColor: Theme.of(context).primaryColor,
                   ),
-                  OrderButton(cart: cart)
+                  OrderButton(/*cart: cart*/)
                 ],
               ),
             ),
@@ -66,10 +69,10 @@ class CartScreen extends StatelessWidget {
 class OrderButton extends StatefulWidget {
   const OrderButton({
     Key key,
-    @required this.cart,
+ //   @required this.cart,
   }) : super(key: key);
 
-  final Cart cart;
+//  final Cart cart;
 
   @override
   _OrderButtonState createState() => _OrderButtonState();
@@ -77,25 +80,26 @@ class OrderButton extends StatefulWidget {
 
 class _OrderButtonState extends State<OrderButton> {
   var _isLoading = false;
-
+  final cart = CartController.to;
   @override
   Widget build(BuildContext context) {
     return FlatButton(
       child: _isLoading ? CircularProgressIndicator() : Text('ORDER NOW'),
-      onPressed: (widget.cart.totalAmount <= 0 || _isLoading)
+      onPressed: (cart.totalAmount <= 0 || _isLoading)
           ? null
           : () async {
         setState(() {
           _isLoading = true;
         });
-        await Provider.of<Orders>(context, listen: false).addOrder(
-          widget.cart.items.values.toList(),
-          widget.cart.totalAmount,
-        );
+//        await Provider.of<Orders>(context, listen: false).addOrder(
+//          cart.items.values.toList(),
+//          cart.totalAmount,
+//        );
+        await OrderController.to.addOrder(cart.items.values.toList(), cart.totalAmount);
         setState(() {
           _isLoading = false;
         });
-        widget.cart.clear();
+        cart.clear();
       },
       textColor: Theme.of(context).primaryColor,
     );

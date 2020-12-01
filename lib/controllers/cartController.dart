@@ -4,15 +4,15 @@ import 'package:udemy_provider/controllers/productController.dart';
 import '../models/cart.dart';
 
 class CartController extends GetxController {
-  RxMap<String, Cart> _items = {}.obs;
+  RxMap<String, Cart> _items = <String, Cart>{}.obs;
 
   static CartController get to {
     return Get.find();
   }
 
-//  Map<String, Cart> get items {
-//    return {..._items};
-//  }
+  Map<String, Cart> get items {
+    return {..._items};
+  }
 
   int get itemCount {
     return _items.length;

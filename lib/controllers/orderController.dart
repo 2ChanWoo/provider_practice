@@ -8,7 +8,11 @@ import '../models/cart.dart';
 import 'package:get/get.dart';
 
 class OrderController extends GetxController {
-  RxList<Order> _orders = [].obs;
+  RxList<Order> _orders = <Order>[].obs;
+
+  static OrderController get to {
+    return Get.find();
+  }
 
   List<Order> get orders {
     return [..._orders];
@@ -16,7 +20,7 @@ class OrderController extends GetxController {
 
   String authToken;
 
-  OrderController(this.authToken, this._orders);
+  OrderController({this.authToken});
 
   Future<void> fetchAndSetOrders() async {
     final url =

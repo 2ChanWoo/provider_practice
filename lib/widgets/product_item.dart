@@ -1,25 +1,33 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:udemy_provider/controllers/cartController.dart';
 //import 'package:provider/provider.dart';
-import 'package:udemy_provider/providers/auth.dart';
-import 'package:udemy_provider/providers/product.dart';
+//import 'package:udemy_provider/providers/auth.dart';
+//import 'package:udemy_provider/providers/product.dart';
+import '../controllers/auth.dart';
+import '../controllers/productController.dart';
 
 import '../screens/product_detail_screen.dart';
 import '../providers/cart.dart';
-
+import '../models/product.dart';
 class ProductItem extends StatelessWidget {
 //  final String id;
 //  final String title;
 //  final String imageUrl;
 //
 //  ProductItem(this.id, this.title, this.imageUrl);
+    final Product prod;
+    ProductItem(this.prod);
 
   @override
   Widget build(BuildContext context) {
     print('product_item build');
-    final prod = Provider.of<Product>(context,
-        listen: false); // listen : false 해도 똑같은데??
-    final cart = Provider.of<Cart>(context, listen: false);
-    final auth = Provider.of<Auth>(context, listen: false);
+//    final prod = Provider.of<Product>(context,                --
+//        listen: false); // listen : false 해도 똑같은데??
+//    final cart = Provider.of<Cart>(context, listen: false);
+//    final auth = Provider.of<Auth>(context, listen: false);
+    final cart = CartController.to;
+    final auth = Auth.to;
 
     //원래 타입을 몰라서 그냥 앞에 긴 타입을 안적어놨음. ctrl+q 로 확인한 타입은 아래와 같다.
     //ScaffoldFeatureController<SnackBar, SnackBarClosedReason>
@@ -59,18 +67,17 @@ class ProductItem extends StatelessWidget {
         ),
         footer: GridTileBar(
           backgroundColor: Colors.black87,
-          leading: Consumer<Product>(
-            builder: (ctx, product, child) => IconButton(
-              icon: Icon(
-                  prod.isFavorite ? Icons.favorite : Icons.favorite_border),
-              color: Theme.of(context).accentColor,
-              onPressed: () {
-                prod.toggleFavoriteStatus(auth.token, auth.userId,)
-                    .catchError((error) {
-                  print('Favorite Icon Button Error ::::: $error');
-                });
-              },
-            ),
+          leading:Obx( () => IconButton(
+                icon: Icon(
+                    prod.isFavorite.value ? Icons.favorite : Icons.favorite_border),
+                color: Theme.of(context).accentColor,
+                onPressed: () {
+                  prod.toggleFavoriteStatus(auth.token, auth.userId,)
+                      .catchError((error) {
+                    print('Favorite Icon Button Error ::::: $error');
+                  });
+                },
+              ),
           ),
           title: Text(
             prod.title ?? '',

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 //import 'package:provider/provider.dart';
 
 import '../providers/products.dart';
-
+import '../controllers/productController.dart';
 
 
 class ProductDetailScreen extends StatelessWidget {
@@ -20,10 +20,11 @@ class ProductDetailScreen extends StatelessWidget {
 //    final loadedProducts = Provider.of<Products>(context)
 //              .items.firstWhere((prod) => prod == productId);
     // 위와 동일한 코드를, 가볍게 만든 것이 바로 아래 코드.
-    final loadedProduct = Provider.of<Products>(
-      context,
-      listen: false,
-    ).findById(productId);
+    final loadedProduct = ProductController.to.findById(productId);
+//    Provider.of<Products>(    --
+//      context,
+//      listen: false,
+//    ).findById(productId);
     //이렇게 함수로 미리 만들어두는것이 더 빠른건가...?
 
     return Scaffold(
