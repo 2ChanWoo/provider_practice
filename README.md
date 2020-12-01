@@ -1,3 +1,9 @@
+#### 2020.12.01
+GetX 로 마이그레이션 시도중.
+
+totalAmount , auth  두개 다 obs로 시도해보기
+
+
 #### 2020.11.21
 자동로그인 성공하면, 다음과 같은 에러와 흰 화면에서 상품들이 로드되지 않음.
 ERROR:flutter/lib/ui/ui_dart_state.cc(157)] Unhandled Exception: A Products was used after being disposed.
