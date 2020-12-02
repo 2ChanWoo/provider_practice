@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 import 'products_overview_screen.dart';
 import 'auth_screen.dart';
@@ -10,8 +11,10 @@ class FirstScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     //final auth = Provider.of<Auth>(context); --
     final auth = Auth.to;
+    print('first screen build... auth is ... ${auth.isAuth}');
 
-    return auth.isAuth
+    return GetBuilder<Auth>(
+        builder : (auth) => auth.isAuth
         ? ProductsOverviewScreen()
         : FutureBuilder(
             future: auth.tryAutoLogin(),
@@ -21,6 +24,7 @@ class FirstScreen extends StatelessWidget {
                         color: Colors.cyan,
                       )
                     : AuthScreen(),
-          );
+          )
+    );
   }
 }

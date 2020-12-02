@@ -2,16 +2,28 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
+import 'package:udemy_provider/controllers/auth.dart';
 import '../models/http_exception.dart';
 import '../models/product.dart';
 
 class ProductController extends GetxController {
   RxList<Product> _items = <Product>[].obs;
 
-  final String authToken;
-  final String userId;
+  String authToken;
+  String userId;
 
-  ProductController({this.authToken, this.userId});
+
+  @override
+  void onInit() {
+    print('ProductController init');
+
+    everAll([Auth.to.RxToken, Auth.to.RxUserId], (_) {
+      authToken = Auth.to.RxToken.value;
+      userId = Auth.to.RxUserId.value;
+    });
+  }
+
+  ProductController(this.authToken, this.userId);
 
   static ProductController get to {
     return Get.find();
@@ -31,6 +43,8 @@ class ProductController extends GetxController {
 
   //강의버전에서는 await version임.
   Future<void> fetchAndSetProducts({bool filterByUser = false}) async {
+    print('authToken is ... $authToken');
+    print('userId is ... $userId');
     String filterString = filterByUser ? 'orderBy="creatorId"&equalTo="$userId"' : '';
 
     final url =

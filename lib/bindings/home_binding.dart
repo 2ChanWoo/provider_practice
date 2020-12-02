@@ -9,7 +9,7 @@ class HomeBinding extends Bindings {
   void dependencies() {
     Get.put<Auth>(Auth());
     Get.put<CartController>(CartController());
-    Get.put<OrderController>(OrderController());
-    Get.put<ProductController>(ProductController());
+    Get.put<OrderController>(OrderController(Auth.to.token));
+    Get.put<ProductController>(ProductController(Auth.to.token, Auth.to.userId));
   }
 }

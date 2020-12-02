@@ -20,7 +20,7 @@ class OrderController extends GetxController {
 
   String authToken;
 
-  OrderController({this.authToken});
+  OrderController(this.authToken);
 
   Future<void> fetchAndSetOrders() async {
     final url =

@@ -8,32 +8,39 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:udemy_provider/models/http_exception.dart';
 
 class Auth extends GetxController {
-  String _token;
+  RxString RxToken = ''.obs;
   DateTime _expiryDate; // 파베에서 토큰이 만료되는 시간.
-  String _userId;
+  RxString RxUserId = ''.obs;
   Timer _authTimer;
+
+
+  @override
+  void onInit() {
+    RxToken.nil();
+    RxUserId.nil();
+  }
 
   static Auth get to {
     return Get.find();
   }
 
   bool get isAuth {
-    print(_token);
+    print('isAuth :: $RxToken');
     return token != null;
   }
 
   String get token {
     if (_expiryDate != null &&
         _expiryDate.isAfter(DateTime.now()) &&
-        _token != null) {
-      return _token;
+        RxToken.value != null) {
+      return RxToken.value;
     }
 
     return null;
   }
 
   String get userId {
-    return _userId;
+    return RxUserId.value;
   }
 
   Future<void> _authenticate(
@@ -54,8 +61,8 @@ class Auth extends GetxController {
       if (responseBody['error'] != null) {
         throw HttpException(responseBody['error']['message']);
       }
-      _token = responseBody['idToken'];
-      _userId = responseBody['localId'];
+      RxToken.value = responseBody['idToken'];
+      RxUserId.value = responseBody['localId'];
       _expiryDate = DateTime.now().add(
         Duration(
           seconds: int.parse(
@@ -69,8 +76,8 @@ class Auth extends GetxController {
       print('_expiryDate :: $_expiryDate');
       print('_expiryDate toIso8601String :: ${_expiryDate.toIso8601String()}');
       final userData = json.encode({
-        'token': _token,
-        'userId': _userId,
+        'token': RxToken.value,
+        'userId': RxUserId.value,
         'expiryDate': _expiryDate.toIso8601String(),
       });
       prefs.setString('userData', userData);
@@ -105,8 +112,8 @@ class Auth extends GetxController {
       if (expiryDate.isBefore(DateTime.now())) {
         return false;
       }
-      _token = extractedUserData['token'];
-      _userId = extractedUserData['userId'];
+      RxToken.value = extractedUserData['token'];
+      RxUserId.value = extractedUserData['userId'];
       _expiryDate = expiryDate;
       update();
       _autoLogout();
@@ -119,8 +126,8 @@ class Auth extends GetxController {
   }
 
   Future<void> logout() async {
-    _userId = null;
-    _token = null;
+    RxUserId.value = null;
+    RxToken.value = null;
     _expiryDate = null;
     if (_authTimer != null) {
       _authTimer.cancel();
