@@ -22,6 +22,29 @@ class ProductsGrid extends StatelessWidget {
     final products = _showOnlyFavorites ? productsData.favoriteItems : productsData.items;
     print('grid_item build  Get Items...');
 
+
+
+//  내가 작성한 ver.
+//    List<Product> products;   //위에 productData도 List<Product>인데
+//                              //왜 이 코드는 product를 import해야하지??
+//
+//    if(_showOnlyFavorites == true)
+//      products = productsData.items.where((e) => e.isFavorite == true).toList();
+//    else
+//      products = productsData.items.where((e) => e.isFavorite == false).toList();
+
+//    return GridView.builder(    -----------
+//      padding: const EdgeInsets.all(10.0),    //const를 사용하는 것이 좋은 습관????
+//      itemCount: products.length,
+//      itemBuilder: (ctx, i) => ChangeNotifierProvider.value(
+//        value: products[i],
+//        //create: (c) => products[i],
+//        child: ProductItem(
+////            products[i].id,
+////            products[i].title,
+////            products[i].imageUrl,
+//            ),
+//      ),
     return Obx(() => GridView.builder(
         padding: const EdgeInsets.all(10.0),    //const를 사용하는 것이 좋은 습관????
         itemCount: productsData.items.length,

@@ -7,40 +7,7 @@ import '../models/http_exception.dart';
 import '../models/product.dart';
 
 class ProductController extends GetxController {
-  RxList<Product> _items = <Product>[
-//    Product(
-//    id: 'p1',
-//    title: 'Red Shirt',
-//    description: 'A red shirt - it is pretty red!',
-//    price: 29.99,
-//    imageUrl:
-//    'https://cdn.pixabay.com/photo/2016/10/02/22/17/red-t-shirt-1710578_1280.jpg',
-//  ),
-//    Product(
-//      id: 'p2',
-//      title: 'Trousers',
-//      description: 'A nice pair of trousers.',
-//      price: 59.99,
-//      imageUrl:
-//      'https://upload.wikimedia.org/wikipedia/commons/thumb/e/e8/Trousers%2C_dress_%28AM_1960.022-8%29.jpg/512px-Trousers%2C_dress_%28AM_1960.022-8%29.jpg',
-//    ),
-//    Product(
-//      id: 'p3',
-//      title: 'Yellow Scarf',
-//      description: 'Warm and cozy - exactly what you need for the winter.',
-//      price: 19.99,
-//      imageUrl:
-//      'https://live.staticflickr.com/4043/4438260868_cc79b3369d_z.jpg',
-//    ),
-//    Product(
-//      id: 'p4',
-//      title: 'A Pan',
-//      description: 'Prepare any meal you want.',
-//      price: 49.99,
-//      imageUrl:
-//      'https://upload.wikimedia.org/wikipedia/commons/thumb/1/14/Cast-Iron-Pan.jpg/1024px-Cast-Iron-Pan.jpg',
-//    ),
-  ].obs;
+  RxList<Product> _items = <Product>[].obs;
 
   String authToken;
   String userId;
@@ -62,52 +29,16 @@ class ProductController extends GetxController {
     return Get.find();
   }
 
-  RxList<Product> get items { //안돼는줄 알았는데, 실험결과 반환 제대로 될듯요
-//    return [..._items];
-      return _items;
+  List<Product> get items { //안돼는줄 알았는데, 실험결과 반환 제대로 될듯요
+    return [..._items];
   }
 
   List<Product> get favoriteItems {   //이렇게 게터하면 자동반환 되는거지? obs값이 아니게되나..? otList니까..??
-    return _items.where((e) => e.isFavorite == true ).toList();
+    return _items.where((e) => e.isFavorite.value == true ).toList();
   }   // 아..ㅋㅋ _items.obs 안의 값 isFavorite도 obs니까 .value를 붙어야지~!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
   Product findById(String id) {
     return _items.firstWhere((element) => element.id == id);
-  }
-
-  bool isFavofite(String id) {
-    final prodIndex = _items.indexWhere((prod) => prod.id == id);
-    return _items[prodIndex].isFavorite;
-  }
-
-  Future<void> toggleFavoriteStatus(String authToken, String userId, String id) {
-    final prodIndex = _items.indexWhere((prod) => prod.id == id);
-    final currentItem = _items[prodIndex];
-
-    final url =
-        'https://flutter-udemy-3cde6.firebaseio.com/userFavorites/$userId/$id.json?auth=$authToken';
-    final backupFavorite = currentItem.isFavorite;
-    //currentItem.isFavorite = !backupFavorite;
-    currentItem.changeFavorite(!backupFavorite);
-
-    return http.put(
-      url,
-      body: json.encode(
-        currentItem.isFavorite,
-      ),
-    )
-        .then((value) {
-      if (value.statusCode >= 400) {
-        print('http ErrorCode :: ${value.statusCode}');
-        currentItem.isFavorite = backupFavorite;
-      }
-    }).catchError(
-          (error) {
-            currentItem.isFavorite = backupFavorite;
-        print('toggleFavoriteStatus() ERROR ::::: $error');
-        throw error;
-      },
-    );
   }
 
   //강의버전에서는 await version임.
@@ -141,7 +72,7 @@ class ProductController extends GetxController {
             price: prodData['price'],
             //isFavorite: prodData['isFavorite'],
             isFavorite:
-            favoriteData == null ? false : (favoriteData[prodId] ?? false),
+            favoriteData == null ? false.obs : (favoriteData[prodId] ?? false.obs),
             imageUrl: prodData['imageUrl'],
           ));
           print(loadedProducts[loadedProducts.length - 1].toString());
