@@ -14,34 +14,18 @@ class ProductsGrid extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     print('grid_item build');
+    RxBool ll = false.obs;
+    ll = true.obs;
+    print(ll);
     //final productsData = Provider.of<Products>(context); // listen : false 해도 똑같은데?? 22
     final productsData = ProductController.to;
     final products = _showOnlyFavorites ? productsData.favoriteItems : productsData.items;
-//  내가 작성한 ver.
-//    List<Product> products;   //위에 productData도 List<Product>인데
-//                              //왜 이 코드는 product를 import해야하지??
-//
-//    if(_showOnlyFavorites == true)
-//      products = productsData.items.where((e) => e.isFavorite == true).toList();
-//    else
-//      products = productsData.items.where((e) => e.isFavorite == false).toList();
+    print('grid_item build  Get Items...');
 
-//    return GridView.builder(    -----------
-//      padding: const EdgeInsets.all(10.0),    //const를 사용하는 것이 좋은 습관????
-//      itemCount: products.length,
-//      itemBuilder: (ctx, i) => ChangeNotifierProvider.value(
-//        value: products[i],
-//        //create: (c) => products[i],
-//        child: ProductItem(
-////            products[i].id,
-////            products[i].title,
-////            products[i].imageUrl,
-//            ),
-//      ),
     return Obx(() => GridView.builder(
         padding: const EdgeInsets.all(10.0),    //const를 사용하는 것이 좋은 습관????
-        itemCount: products.length,
-        itemBuilder: (ctx, i) => ProductItem(products[i]),
+        itemCount: productsData.items.length,
+        itemBuilder: (ctx, i) => ProductItem(productsData.items[i]),
         gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
           crossAxisCount: 2,
           childAspectRatio: 3 / 2,

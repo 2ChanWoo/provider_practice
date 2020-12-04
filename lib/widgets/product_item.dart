@@ -67,18 +67,20 @@ class ProductItem extends StatelessWidget {
         ),
         footer: GridTileBar(
           backgroundColor: Colors.black87,
-          leading:Obx( () => IconButton(
-                icon: Icon(
-                    prod.isFavorite.value ? Icons.favorite : Icons.favorite_border),
+          leading:IconButton(
+                icon: GetBuilder<Product>(
+                  builder: (prodController) => Icon(
+                      prod.isFavorite ? Icons.favorite : Icons.favorite_border),
+             // ProductController.to.isFavofite(prod.id) ? Icons.favorite : Icons.favorite_border),
+                ),
                 color: Theme.of(context).accentColor,
                 onPressed: () {
-                  prod.toggleFavoriteStatus(auth.token, auth.userId,)
+                  ProductController.to.toggleFavoriteStatus(auth.token, auth.userId,prod.id)
                       .catchError((error) {
                     print('Favorite Icon Button Error ::::: $error');
                   });
                 },
               ),
-          ),
           title: Text(
             prod.title ?? '',
             textAlign: TextAlign.center,

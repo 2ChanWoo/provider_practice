@@ -1,3 +1,12 @@
+#### Fail
+일단 나오게만 해놓음.
+product-isFavorite 를 RxBool -> bool 로 변경하고,
+모든 함수는 controller에서 동작하도록 변경.
+그러다가 product에 함수 하나 추가하고..
+controller에도 isFavofite 함수 추가하고..
+product_item 위젯에는 GetBuilder 했는데도 안됨 ㅜㅜㅜㅜ
+저장해놓고 product에 함수 있던 때로 돌아가자.
+
 #### again 2020.12.01
 debug migration
 
