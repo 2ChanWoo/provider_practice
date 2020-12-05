@@ -1,3 +1,6 @@
+#### Boox exception 해결.
+이것도 제대로 보지 않아서 발생....
+
 #### Fail
 일단 나오게만 해놓음.
 product-isFavorite 를 RxBool -> bool 로 변경하고,

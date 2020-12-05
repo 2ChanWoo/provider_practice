@@ -69,6 +69,7 @@ class ProductItem extends StatelessWidget {
           backgroundColor: Colors.black87,
           leading:Obx( () => IconButton(
                 icon: Icon(
+                    //Product.to.isFavorite.value ? Icons.favorite : Icons.favorite_border),
                     prod.isFavorite.value ? Icons.favorite : Icons.favorite_border),
                 color: Theme.of(context).accentColor,
                 onPressed: () {

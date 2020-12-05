@@ -3,13 +3,17 @@ import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
-class Product{
+class Product extends GetxController{
   final String id;
   final String title;
   final String description;
   final double price;
   final String imageUrl;
   RxBool isFavorite = false.obs;
+
+  static Product get to {
+    return Get.find();
+  }
 
   Product({
     @required this.id,
@@ -29,7 +33,7 @@ class Product{
     return http.put(
       url,
       body: json.encode(
-        isFavorite,
+        isFavorite.value,
       ),
     )
         .then((value) {

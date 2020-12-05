@@ -65,14 +65,14 @@ class ProductController extends GetxController {
 
         final List<Product> loadedProducts = [];
         extractedData.forEach((prodId, prodData) {
+          var tempFavorite = favoriteData == null ? false : (favoriteData[prodId] ?? false);
           loadedProducts.add(Product(
             id: prodId,
             title: prodData['title'],
             description: prodData['description'],
             price: prodData['price'],
             //isFavorite: prodData['isFavorite'],
-            isFavorite:
-            favoriteData == null ? false.obs : (favoriteData[prodId] ?? false.obs),
+            isFavorite: tempFavorite ? true.obs : false.obs,
             imageUrl: prodData['imageUrl'],
           ));
           print(loadedProducts[loadedProducts.length - 1].toString());
