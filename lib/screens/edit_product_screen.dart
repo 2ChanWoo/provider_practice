@@ -50,10 +50,11 @@ class _EditProductScreenState extends State<EditProductScreen> {
   void didChangeDependencies() {
     if (_isInit) {
       final productId = ModalRoute.of(context).settings.arguments as String;
+      //argument로 넘어온 값이 있을 때, - 상품에서 edit를 눌렀을 때
       if (productId != null) {
         _editedProduct =
             //Provider.of<Products>(context, listen: false).findById(productId); --
-        ProductController.to.findById(productId);
+            ProductController.to.findById(productId);
         _initValues = {
           'title': _editedProduct.title,
           'description': _editedProduct.description,
@@ -104,19 +105,17 @@ class _EditProductScreenState extends State<EditProductScreen> {
     });
 
     _form.currentState.save();
-    if (_editedProduct.id != null) {
+    if (_editedProduct.id != null) {  //수정
       //Provider.of<Products>(context, listen: false) --
-        ProductController.to
+      ProductController.to
           .updateProduct(_editedProduct.id, _editedProduct)
-      .then((value) {
+          .then((value) {
         setState(() {
-          print('ddddddddddddddddddddddddddddd');
           _isLodding = false;
-          print('Lodding $_isLodding');
         });
-        Navigator.of(context).pop();
-      })
-          .catchError((error) {
+        //Navigator.of(context).pop();
+        Get.back();
+      }).catchError((error) {
         return showDialog<Null>(
           context: context,
           builder: (ctx) => AlertDialog(
@@ -125,26 +124,22 @@ class _EditProductScreenState extends State<EditProductScreen> {
             actions: <Widget>[
               FlatButton(
                   onPressed: () {
-                    Navigator.of(context).pop();
+                    //Navigator.of(context).pop();
+                    Get.back();
                   },
                   child: Text('Ok')),
             ],
           ),
         );
       });
-    } else {
+    } else {    //새 상품 추가
       //Provider.of<Products>(context, listen: false) --
-      ProductController.to
-          .addProduct(_editedProduct)
-          .then((value) {
+      ProductController.to.addProduct(_editedProduct).then((value) {
         setState(() {
-          print('ddddddddddddddddddddddddddddd');
           _isLodding = false;
-          print('Lodding $_isLodding');
         });
         Navigator.of(context).pop();
-      })
-          .catchError((error) {
+      }).catchError((error) {
         return showDialog<Null>(
           context: context,
           builder: (ctx) => AlertDialog(
@@ -329,7 +324,8 @@ class _EditProductScreenState extends State<EditProductScreen> {
                               if (!value.endsWith('.png') &&
                                   !value.endsWith('.jpg') &&
                                   !value.endsWith('.jpeg') &&
-                                  !value.endsWith('-mo')) {
+                                  !value.endsWith('-mo')&&
+                                  !value.endsWith('-rj')) {
                                 return 'Please enter a valid image URL.';
                               }
                               return null;

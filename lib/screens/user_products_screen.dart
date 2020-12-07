@@ -6,6 +6,7 @@ import '../providers/products.dart';
 import '../controllers/productController.dart';
 import '../widgets/user_product_item.dart';
 import '../widgets/app_drawer.dart';
+import 'package:get/get.dart';
 
 class UserProductsScreen extends StatefulWidget {
   static const routeName = '/user-products';
@@ -51,7 +52,7 @@ class _UserProductsScreenState extends State<UserProductsScreen> {
         onRefresh: () => _refreshProducts(context),
         child: Padding(
         padding: EdgeInsets.all(8),
-        child: ListView.builder(
+        child: Obx( () => ListView.builder(
           itemCount: productsData.items.length,
           itemBuilder: (_, i) => Column(
                 children: [
@@ -63,7 +64,7 @@ class _UserProductsScreenState extends State<UserProductsScreen> {
                   Divider(),
                 ],
               ),
-        ),
+        ),)
       ),)
     );
   }

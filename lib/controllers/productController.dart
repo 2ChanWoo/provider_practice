@@ -53,6 +53,7 @@ class ProductController extends GetxController {
         'https://flutter-udemy-3cde6.firebaseio.com/userFavorites/$userId.json?auth=$authToken';
     return http.get(url).then((response) {
       final extractedData = json.decode(response.body) as Map<String, dynamic>;
+      print(' extractedData ::::: $extractedData');
 
       if (extractedData == null || extractedData['error'] != null) {
         print('---------------- extractedData ::::: $extractedData');
@@ -102,8 +103,8 @@ class ProductController extends GetxController {
           'creatorId': userId,
         }))
         .then((response) {
-      print(response);
-      print(json.decode(response.body));
+      print("response >>>>> $response");
+      print("json decode >>>>> ${json.decode(response.body)}");
 
       final newProduct = Product(
         title: product.title,

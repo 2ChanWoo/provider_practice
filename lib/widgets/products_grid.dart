@@ -9,6 +9,7 @@ import 'package:get/get.dart';
 
 class ProductsGrid extends StatelessWidget {
   bool _showOnlyFavorites;
+
   ProductsGrid(this._showOnlyFavorites);
 
   @override
@@ -19,10 +20,9 @@ class ProductsGrid extends StatelessWidget {
     print(ll);
     //final productsData = Provider.of<Products>(context); // listen : false 해도 똑같은데?? 22
     final productsData = ProductController.to;
-    final products = _showOnlyFavorites ? productsData.favoriteItems : productsData.items;
+    final products =
+        _showOnlyFavorites ? productsData.favoriteItems : productsData.items;
     print('grid_item build  Get Items...');
-
-
 
 //  내가 작성한 ver.
 //    List<Product> products;   //위에 productData도 List<Product>인데
@@ -45,10 +45,15 @@ class ProductsGrid extends StatelessWidget {
 ////            products[i].imageUrl,
 //            ),
 //      ),
-    return Obx(() => GridView.builder(
-        padding: const EdgeInsets.all(10.0),    //const를 사용하는 것이 좋은 습관????
-        itemCount: productsData.items.length,
-        itemBuilder: (ctx, i) => ProductItem(productsData.items[i]),
+    return Obx(
+      () => GridView.builder(
+        padding: const EdgeInsets.all(10.0), //const를 사용하는 것이 좋은 습관????
+        itemCount: _showOnlyFavorites
+            ? productsData.favoriteItems.length
+            : productsData.items.length,
+        itemBuilder: (ctx, i) => ProductItem(_showOnlyFavorites
+            ? productsData.favoriteItems[i]
+            : productsData.items[i]),
         gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
           crossAxisCount: 2,
           childAspectRatio: 3 / 2,
@@ -58,6 +63,4 @@ class ProductsGrid extends StatelessWidget {
       ),
     );
   }
-
-
 }

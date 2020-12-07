@@ -1,3 +1,16 @@
+#### 2020 12 07 error
+Product_item Icon에 prod.isFavorite.value != null 추가
+
+위에서 해당에러 해결한 적이 있지만, 이번 에러는 다른부분.
+
+네비게이션을 Replacement 말고, 그냥 push했을 경우에 새로운 Item을 추가하면 발생.
+
+이유는 Obx가 메인상품 페이지를 업데이트 해 주는데,
+
+그 다음페이지에서 새로운 상품이 추가되어서 메인페이지에서는 그 값이 없음.
+
+따라서, null이면 저절로 false가 되도록 함.
+
 #### Boox exception 해결.
 이것도 제대로 보지 않아서 발생....
 

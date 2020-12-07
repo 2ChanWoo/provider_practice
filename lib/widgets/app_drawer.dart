@@ -40,7 +40,7 @@ class AppDrawer extends StatelessWidget {
             title: Text('My item'),
             onTap: () {
               Navigator.of(context)
-                  .pushReplacementNamed(UserProductsScreen.routeName);
+                  .pushNamed(UserProductsScreen.routeName);
             },
           ),
           Divider(),
