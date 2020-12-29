@@ -46,17 +46,22 @@ class ProductItem extends StatelessWidget {
       borderRadius: BorderRadius.circular(10),
       child: GridTile(
         child: GestureDetector(
-          onTap: () {
-            Navigator.of(context).pushNamed(
-              ProductDetailScreen.routeName,
-              arguments: prod.id,
-            );
-          },
-          child: Image.network(
-            prod.imageUrl,
-            fit: BoxFit.cover,
-          ),
-        ),
+            onTap: () {
+              Navigator.of(context).pushNamed(
+                ProductDetailScreen.routeName,
+                arguments: prod.id,
+              );
+            },
+            child: FadeInImage(
+              placeholder: AssetImage('assets/images/product-placeholder.png'),
+              image: NetworkImage(prod.imageUrl),
+              fit: BoxFit.cover,
+            )
+//          Image.network(
+//            prod.imageUrl,
+//            fit: BoxFit.cover,
+//          ),
+            ),
         footer: GridTileBar(
           backgroundColor: Colors.black87,
           leading: Consumer<Product>(
@@ -65,7 +70,11 @@ class ProductItem extends StatelessWidget {
                   prod.isFavorite ? Icons.favorite : Icons.favorite_border),
               color: Theme.of(context).accentColor,
               onPressed: () {
-                prod.toggleFavoriteStatus(auth.token, auth.userId,)
+                prod
+                    .toggleFavoriteStatus(
+                  auth.token,
+                  auth.userId,
+                )
                     .catchError((error) {
                   print('Favorite Icon Button Error ::::: $error');
                 });

@@ -71,6 +71,7 @@ class Products with ChangeNotifier {
     return http.get(url).then((response) {
       final extractedData = json.decode(response.body) as Map<String, dynamic>;
 
+      //json은 catchError에 잡히지 않기 때문에, 이렇게 별도로 만든 것 이다.
       if (extractedData == null || extractedData['error'] != null) {
         print('---------------- extractedData ::::: $extractedData');
         print('------------------- extractedData null check');
@@ -82,6 +83,7 @@ class Products with ChangeNotifier {
 
         final List<Product> loadedProducts = [];
         extractedData.forEach((prodId, prodData) {
+          print('prodId >>>>> $prodId');
           loadedProducts.add(Product(
             id: prodId,
             title: prodData['title'],
